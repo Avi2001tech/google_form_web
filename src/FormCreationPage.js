@@ -16,19 +16,29 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import MCQSection from './MCQSection'; // Import the MCQSection component
+import MCQSection from './MCQSection';
 
 function FormCreationPage() {
   const [showMCQSection, setShowMCQSection] = useState(false);
+  const [completedSections, setCompletedSections] = useState([]);
 
   const handleRadioChange = (event) => {
     setShowMCQSection(event.target.value === 'mcq');
   };
 
+  const handleRemoveSection = () => {
+    setShowMCQSection(false);
+  };
+
+  const handleMarkAsComplete = () => {
+    setCompletedSections([...completedSections, 'mcq']); // Mark the current section as complete
+    setShowMCQSection(false);
+  };
+
   return (
     <Box p={4} width="100%" height="100vh" overflow="auto">
       <Flex justifyContent="center">
-        <Box width="66%"> {/* Update width to 66% for 2/3 of the screen */}
+        <Box width="66%">
           <Box p={4} borderWidth={1} borderRadius="xl" boxShadow="md" background="white">
             <Heading size="lg" mb={4}>
               Create a New Form
@@ -36,7 +46,6 @@ function FormCreationPage() {
             <VStack spacing={4} align="stretch">
               <Input placeholder="Section Title" />
               <Textarea placeholder="Section Description" />
-              {/* Add more form fields as needed */}
             </VStack>
             <Menu placement="right">
               <MenuButton as={Button} mt={4} width="100%">
@@ -50,28 +59,31 @@ function FormCreationPage() {
               <MenuList>
                 <Radio
                   size="sm"
-                  mr={2}
                   value="mcq"
                   onChange={handleRadioChange}
                   isChecked={showMCQSection}
                 >
                   Add an mcq question
                 </Radio>
-                <MenuItem>
-                  <Radio size="sm" mr={2} />
-                  Add a text question
-                </MenuItem>
-                <MenuItem>
-                  <Radio size="sm" mr={2} />
-                  Upload media
-                </MenuItem>
-                <MenuItem>
-                  <Radio size="sm" mr={2} />
-                  Ask URL
-                </MenuItem>
+                {/* ... Other menu items */}
               </MenuList>
             </Menu>
-            {showMCQSection && <MCQSection />}
+            {completedSections.map((section, index) => (
+              <MCQSection
+                key={index}
+                onComplete={handleMarkAsComplete}
+                onRemove={() => {
+                  const updatedSections = completedSections.filter((_, i) => i !== index);
+                  setCompletedSections(updatedSections);
+                }}
+              />
+            ))}
+            {showMCQSection && (
+              <MCQSection
+                onComplete={handleMarkAsComplete}
+                onRemove={handleRemoveSection}
+              />
+            )}
           </Box>
         </Box>
       </Flex>

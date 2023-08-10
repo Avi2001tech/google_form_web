@@ -9,7 +9,8 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { Link,BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; // Import necessary components from react-router-dom
-import IntroPage from './IntroPage'; // Import your IntroPage component
+import IntroPage from './IntroPage';
+import FormCreationPage  from './FormCreationPage'; 
 
 function App() {
   const [isLoginForm, setIsLoginForm] = useState(false);
@@ -23,9 +24,8 @@ function App() {
       <Flex minHeight="100vh" alignItems="center" justifyContent="center">
         <BrowserRouter>
           <Switch>
-            <Route path="/intro">
-              <IntroPage />
-            </Route>
+            <Route path="/intro" component={IntroPage} />
+            <Route path="/create-form" component={FormCreationPage} />
             <Route path="/">
               <Card
                 title={isLoginForm ? 'Login' : 'Sign Up'}

@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import {
   ChakraProvider,
   Box,
-  Heading,
+  Input,
   Flex,
   VStack,
-  Input,
   Button,
-  Divider,
+  Heading,
 } from '@chakra-ui/react';
+import { Link,BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; // Import necessary components from react-router-dom
+import IntroPage from './IntroPage';
+import FormCreationPage  from './FormCreationPage'; 
+import FormPage from './form_mainPage';
 
 function App() {
   const [isLoginForm, setIsLoginForm] = useState(false);
@@ -20,11 +23,20 @@ function App() {
   return (
     <ChakraProvider>
       <Flex minHeight="100vh" alignItems="center" justifyContent="center">
-        <Card
-          title={isLoginForm ? 'Login' : 'Sign Up'}
-          form={isLoginForm ? <LoginForm /> : <SignupForm />}
-          onToggle={toggleForm}
-        />
+        <BrowserRouter>
+          <Switch>
+            <Route path="/intro" component={IntroPage} />
+            <Route path="/create-form" component={FormCreationPage} />
+            <Route path="/create" component={FormPage} />
+            <Route path="/">
+              <Card
+                title={isLoginForm ? 'Login' : 'Sign Up'}
+                form={isLoginForm ? <LoginForm /> : <SignupForm />}
+                onToggle={toggleForm}
+              />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </Flex>
     </ChakraProvider>
   );
@@ -62,9 +74,11 @@ function LoginForm() {
     <VStack spacing={4} align="stretch">
       <Input placeholder="Email" />
       <Input type="password" placeholder="Password" />
-      <Button colorScheme="teal" width="100%">
-        Login
-      </Button>
+      <Link to="/intro"> {/* Link to IntroPage */}
+        <Button colorScheme="teal" width="100%">
+          Login
+        </Button>
+      </Link>
     </VStack>
   );
 }
@@ -76,9 +90,11 @@ function SignupForm() {
       <Input type="password" placeholder="Password" />
       <Input type="password" placeholder="Confirm Password" />
       <Input placeholder="Name" />
-      <Button colorScheme="teal" width="100%">
-        Sign Up
-      </Button>
+      <Link to="/intro"> {/* Link to IntroPage */}
+        <Button colorScheme="teal" width="100%">
+          Sign Up
+        </Button>
+      </Link>
     </VStack>
   );
 }

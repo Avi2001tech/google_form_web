@@ -6,23 +6,27 @@ import {
   Heading,
   Text,
   Avatar,
-  IconButton,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom'; // Make sure to import the Link component if you're using React Router
+import { Link } from 'react-router-dom';
 
 function IntroPage() {
   return (
-    <Box p={4}>
-      <Flex justifyContent="space-between" alignItems="center">
+    <Box p={4} paddingTop="40px" paddingRight="40px" paddingBottom="40px" paddingLeft="40px">
+      <Flex justifyContent="flex-end" alignItems="flex-start">
         <Avatar name="User Avatar" size="md" />
-        <Text>Welcome to gf website</Text>
       </Flex>
       <Box mt={8} textAlign="center">
         <Heading size="lg" mb={4}>
-          Welcome to Our Website
+          Welcome to Our "Apna Form Banao" Website,
         </Heading>
-        <Link to="/create-form">
+        <Heading size="md" mb={4}>
+          Now to create a form is everyone's cup of tea with our website.
+        </Heading>
+        <Text fontSize="lg" lineHeight="1.5" mb={4}>
+          Create your own forms with ease and convenience. Start by clicking below.
+        </Text>
+        <Link to="/create">
           <Button colorScheme="teal" leftIcon={<AddIcon />}>
             Create a New Form
           </Button>
@@ -33,3 +37,5 @@ function IntroPage() {
 }
 
 export default IntroPage;
+
+

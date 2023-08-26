@@ -11,6 +11,7 @@ import {
 import { Link,BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; // Import necessary components from react-router-dom
 import IntroPage from './IntroPage';
 import FormCreationPage  from './FormCreationPage'; 
+import FormPage from './form_mainPage';
 
 function App() {
   const [isLoginForm, setIsLoginForm] = useState(false);
@@ -26,6 +27,7 @@ function App() {
           <Switch>
             <Route path="/intro" component={IntroPage} />
             <Route path="/create-form" component={FormCreationPage} />
+            <Route path="/create" component={FormPage} />
             <Route path="/">
               <Card
                 title={isLoginForm ? 'Login' : 'Sign Up'}

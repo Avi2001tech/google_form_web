@@ -26,7 +26,7 @@ function IntroPage() {
         <Text fontSize="lg" lineHeight="1.5" mb={4}>
           Create your own forms with ease and convenience. Start by clicking below.
         </Text>
-        <Link to="/create-form">
+        <Link to="/create">
           <Button colorScheme="teal" leftIcon={<AddIcon />}>
             Create a New Form
           </Button>

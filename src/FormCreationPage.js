@@ -16,13 +16,25 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import MCQSection from './MCQSection'; // Import the MCQSection component
+import MCQSection from './sections/MCQSection'; // Import the MCQSection component
 
 function FormCreationPage() {
   const [showMCQSection, setShowMCQSection] = useState(false);
+  const [isMCQComplete, setIsMCQComplete] = useState(false); // Track completion state
 
   const handleRadioChange = (event) => {
     setShowMCQSection(event.target.value === 'mcq');
+    setIsMCQComplete(event.target.value === 'mcq'); // Reset completion state when switching sections
+  };
+
+  const handleMCQComplete = () => {
+    setIsMCQComplete(true); // Mark the MCQ section as complete
+  };
+
+  const handleMCQRemove = () => {
+    // Implement logic to remove the MCQ section (destroy it) here
+    // For now, let's just hide it by setting showMCQSection to false
+    setShowMCQSection(false);
   };
 
   return (
@@ -48,6 +60,7 @@ function FormCreationPage() {
                 </Center>
               </MenuButton>
               <MenuList>
+                <MenuItem>
                 <Radio
                   size="sm"
                   mr={2}
@@ -55,8 +68,9 @@ function FormCreationPage() {
                   onChange={handleRadioChange}
                   isChecked={showMCQSection}
                 >
-                  Add an mcq question
                 </Radio>
+                Add an mcq question
+                </MenuItem>
                 <MenuItem>
                   <Radio size="sm" mr={2} />
                   Add a text question
@@ -71,7 +85,10 @@ function FormCreationPage() {
                 </MenuItem>
               </MenuList>
             </Menu>
-            {showMCQSection && <MCQSection />}
+            {showMCQSection && <MCQSection 
+            onComplete={handleMCQComplete}
+            onRemove={handleMCQRemove}
+            />}
           </Box>
         </Box>
       </Flex>

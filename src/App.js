@@ -8,9 +8,8 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react';
-import { Link,BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; // Import necessary components from react-router-dom
+import { Link,BrowserRouter, Route, Switch,useHistory } from 'react-router-dom'; // Import necessary components from react-router-dom
 import IntroPage from './IntroPage';
-import FormCreationPage  from './FormCreationPage'; 
 import FormPage from './form_mainPage';
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route path="/intro" component={IntroPage} />
-            <Route path="/create-form" component={FormCreationPage} />
             <Route path="/create" component={FormPage} />
             <Route path="/">
               <Card
@@ -84,17 +82,79 @@ function LoginForm() {
 }
 
 function SignupForm() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
+  });
+
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:4000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 201) {
+        // User created successfully
+        console.log('User created successfully');
+        
+        // Redirect to "/create" upon successful signup
+        history.push('/create');
+      } else {
+        // Handle error
+        console.error('Error creating user');
+      }
+    } catch (error) {
+      console.error('API request error', error);
+    }
+  };
+
   return (
     <VStack spacing={4} align="stretch">
-      <Input placeholder="Email" />
-      <Input type="password" placeholder="Password" />
-      <Input type="password" placeholder="Confirm Password" />
-      <Input placeholder="Name" />
-      <Link to="/intro"> {/* Link to IntroPage */}
-        <Button colorScheme="teal" width="100%">
-          Sign Up
-        </Button>
-      </Link>
+      <Input
+        placeholder="Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+      />
+      <Input
+        type="password"
+        placeholder="Password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+      />
+      <Input
+        type="password"
+        placeholder="Confirm Password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+      />
+      <Input
+        placeholder="Name"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
+      <Button colorScheme="teal" width="100%" onClick={handleSubmit}>
+        Sign Up
+      </Button>
     </VStack>
   );
 }

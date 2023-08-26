@@ -163,7 +163,6 @@
 
 import React, { useState } from "react";
 import {
-  ChakraProvider,
   Box,
   Center,
   Input,
@@ -174,9 +173,6 @@ import {
   IconButton,
   Text,
   Divider,
-  Flex,
-  Spacer,
-  SimpleGrid,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 

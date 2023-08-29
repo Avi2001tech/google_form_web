@@ -162,6 +162,7 @@
 // export default FormPage;
 
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Box,
   Center,
@@ -256,6 +257,31 @@ function FormPage() {
           </Box>
         );
       };
+
+      const saveFormData = async () => {
+        try {
+          const formData = {
+            formName,
+            formDescription,
+            segments,
+          };
+    
+          // Send a POST request to your server's endpoint
+          await axios.post("/api/submit-form", formData);
+    
+          // Optionally, you can reset the form fields here
+          setFormName("");
+          setFormDescription("");
+          setSegments([]);
+          
+          // Optionally, you can show a success message to the user
+          alert("Form data submitted successfully!");
+        } catch (error) {
+          console.error("Error submitting form data:", error);
+          // Optionally, you can show an error message to the user
+          alert("Error submitting form data. Please try again later.");
+        }
+      };
       
       
   
@@ -335,6 +361,11 @@ function FormPage() {
         <Center mt={4}>
           <Button colorScheme="teal" size="lg" onClick={addSegment}>
             Add Segment
+          </Button>
+        </Center>
+        <Center mt={4}>
+          <Button colorScheme="blue" size="lg"onClick={saveFormData}>
+            Submit Form
           </Button>
         </Center>
       </Box>

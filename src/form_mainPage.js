@@ -265,9 +265,11 @@ function FormPage() {
             formDescription,
             segments,
           };
+
+          console.log(formData);
     
           // Send a POST request to your server's endpoint
-          await axios.post("/api/submit-form", formData);
+          await axios.post("http://localhost:5000/api/submit-form", formData);
     
           // Optionally, you can reset the form fields here
           setFormName("");

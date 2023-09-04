@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -68,15 +69,70 @@ function Card({ title, form, onToggle }) {
 }
 
 function LoginForm() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 200) {
+        // Login successful, get the JWT token from the response
+        const data = await response.json();
+        const token = data.token;
+
+        // Store the token in local storage or a secure storage method of your choice
+        localStorage.setItem('token', token);
+
+        // Redirect to a protected route or perform other actions upon successful login
+        // For example, you can redirect to '/create'
+        history.push('/create');
+      } else {
+        // Handle login error
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      console.error('API request error', error);
+    }
+  };
+
   return (
     <VStack spacing={4} align="stretch">
-      <Input placeholder="Email" />
-      <Input type="password" placeholder="Password" />
-      <Link to="/intro"> {/* Link to IntroPage */}
-        <Button colorScheme="teal" width="100%">
-          Login
-        </Button>
-      </Link>
+      <Input
+        placeholder="Email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+      />
+      <Input
+        type="password"
+        placeholder="Password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+      />
+      <Button colorScheme="teal" width="100%" onClick={handleSubmit}>
+        Login
+      </Button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </VStack>
   );
 }
